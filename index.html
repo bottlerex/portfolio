@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rex Su — Full-Stack Engineer / AI Automation</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --border: #1e293b;
+      --text: #94a3b8;
+      --text-bright: #e2e8f0;
+      --accent: #5eead4;
+      --accent-dim: rgba(94,234,212,0.1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--text-bright); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent); }
+
+    /* Layout: Brittany Chiang style — sticky left, scrolling right */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .two-col {
+      display: flex;
+      gap: 64px;
+      min-height: 100vh;
+    }
+    .left {
+      position: sticky;
+      top: 0;
+      width: 42%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 96px 0;
+    }
+    .right {
+      width: 58%;
+      padding: 96px 0;
+    }
+
+    /* Nav */
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      color: var(--text);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--text-bright); }
+    .nav-line {
+      width: 32px;
+      height: 1px;
+      background: var(--text);
+      transition: width 0.3s, background 0.3s;
+    }
+    .nav-link:hover .nav-line, .nav-link.active .nav-line {
+      width: 64px;
+      background: var(--text-bright);
+    }
+
+    /* Sections */
+    section { margin-bottom: 96px; }
+    section:last-child { margin-bottom: 0; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-bright);
+      margin-bottom: 32px;
+      /* mobile sticky header */
+      display: none;
+    }
+
+    /* Project cards */
+    .project {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      transition: background 0.2s;
+    }
+    .project:hover { background: var(--accent-dim); }
+    .project-img {
+      width: 140px;
+      min-width: 140px;
+      height: 90px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      background: #1a2332;
+    }
+    .project-img-placeholder {
+      width: 140px;
+      min-width: 140px;
+      height: 90px;
+      border-radius: 6px;
+      border: 1px dashed #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: #475569;
+      text-align: center;
+      background: #1a2332;
+    }
+    .project-title {
+      color: var(--text-bright);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .project-title .arrow {
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+    }
+    .project:hover .project-title .arrow { transform: translate(2px, -2px); }
+    .project-desc {
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+    }
+    .project-impact {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      background: var(--accent-dim);
+      color: var(--accent);
+      padding: 3px 10px;
+      border-radius: 99px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    /* Service list */
+    .service-item {
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      transition: background 0.2s;
+    }
+    .service-item:hover { background: var(--accent-dim); }
+    .service-title {
+      color: var(--text-bright);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .service-detail { font-size: 0.85rem; }
+    .service-price {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-top: 6px;
+    }
+
+    /* Social links */
+    .social-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .social-links a {
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+    .social-links a:hover { color: var(--accent); }
+
+    /* Intro text */
+    .intro-highlight {
+      color: var(--text-bright);
+      font-weight: 500;
+    }
+
+    /* CTA */
+    .cta-block {
+      padding: 32px;
+      border-radius: 8px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(94,234,212,0.2);
+    }
+    .cta-block h3 {
+      color: var(--text-bright);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .cta-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .cta-link:hover { text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .two-col { flex-direction: column; gap: 0; }
+      .left {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 48px 0 24px;
+      }
+      .left nav { display: none; }
+      .right { width: 100%; padding: 24px 0 48px; }
+      .section-label { display: block; position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 16px 0; }
+      .project { flex-direction: column; }
+      .project-img, .project-img-placeholder { width: 100%; height: 160px; min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="two-col">
+
+      <!-- ===== LEFT: Sticky intro ===== -->
+      <header class="left">
+        <div>
+          <h1 style="font-size:2.5rem; font-weight:700; color:var(--text-bright); margin-bottom:4px;">
+            Rex Su
+          </h1>
+          <h2 style="font-size:1.15rem; font-weight:500; color:var(--text-bright); margin-bottom:16px;">
+            Full-Stack Engineer / AI Automation
+          </h2>
+          <p style="max-width:320px; font-size:0.9rem;">
+            我把手動重複的工作變成自動化系統，<br>
+            把散落的數據變成可行動的儀表板。
+          </p>
+
+          <nav style="margin-top:48px;">
+            <a href="#about" class="nav-link active">
+              <span class="nav-line"></span> About
+            </a>
+            <a href="#projects" class="nav-link">
+              <span class="nav-line"></span> Projects
+            </a>
+            <a href="#services" class="nav-link">
+              <span class="nav-line"></span> Services
+            </a>
+            <a href="#contact" class="nav-link">
+              <span class="nav-line"></span> Contact
+            </a>
+          </nav>
+        </div>
+
+        <div class="social-links">
+          <a href="https://github.com/your-github" target="_blank">GitHub</a>
+          <a href="mailto:rexsu.net@gmail.com">Email</a>
+          <!-- 替換成你的聯繫方式 -->
+        </div>
+      </header>
+
+      <!-- ===== RIGHT: Scrollable content ===== -->
+      <main class="right">
+
+        <!-- ABOUT -->
+        <section id="about">
+          <div class="section-label">About</div>
+          <p style="margin-bottom:16px;">
+            我是全端工程師，專注在
+            <span class="intro-highlight">數據系統</span>、
+            <span class="intro-highlight">自動化</span>和
+            <span class="intro-highlight">AI 整合</span>。
+            擅長用最少的零件解決問題 — 別人搭團隊花三個月的系統，
+            我一個人用 AI 輔助，幾天交付。
+          </p>
+          <p style="margin-bottom:16px;">
+            目前獨立運作，有一台 24/7 的 Mac mini 伺服器跑本地 LLM 和各種自動化服務。
+            用過 Python、TypeScript、React、FastAPI、Docker、PostgreSQL，
+            也熟悉 Ollama、Playwright、Telegram Bot 等工具。
+          </p>
+          <p>
+            如果你有需要自動化或數據視覺化的工作，
+            <a href="#contact" style="color:var(--accent)">可以聊聊</a>。
+          </p>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects">
+          <div class="section-label">Projects</div>
+
+          <!-- Project 1 -->
+          <div class="project">
+            <!-- 替換: <img src="screenshots/stock-dashboard.png" class="project-img" alt="台股系統"> -->
+            <div class="project-img-placeholder">截圖<br>stock-dashboard.png</div>
+            <div>
+              <div class="project-title">
+                台股智能分析系統
+                <span class="arrow">&#8599;</span>
+              </div>
+              <div class="project-impact">
+                省去每天 2+ 小時手動看盤，自動產出每日交易訊號和 Telegram 通知
+              </div>
+              <p class="project-desc">
+                全端 SaaS — 50 支股票即時評分、ETF Alpha 排名、動量策略模擬交易、
+                KOL 績效追蹤、AI 多空分析。多用戶認證 + 資料隔離，
+                100+ API 端點、23 個前端頁面。
+              </p>
+              <div class="tags">
+                <span class="tag">FastAPI</span>
+                <span class="tag">React</span>
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">Redis</span>
+                <span class="tag">Docker</span>
+                <span class="tag">Ollama</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="project">
+            <div class="project-img-placeholder">截圖<br>openclaw.png</div>
+            <div>
+              <div class="project-title">
+                OpenClaw 自動化平台
+                <span class="arrow">&#8599;</span>
+              </div>
+              <div class="project-impact">
+                將原本人工操作的瀏覽器任務全面自動化，錯誤自動重試 + Telegram 即時回報
+              </div>
+              <p class="project-desc">
+                任務排程引擎 — 瀏覽器自動化、多步驟工作流、失敗重試機制。
+                透過 Telegram 遠端派發任務，整合 Claude Code 做 AI 驅動的自動化。
+              </p>
+              <div class="tags">
+                <span class="tag">Python</span>
+                <span class="tag">Playwright</span>
+                <span class="tag">Docker</span>
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">Telegram Bot</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 3 -->
+          <div class="project">
+            <div class="project-img-placeholder">截圖<br>work-tracker.png</div>
+            <div>
+              <div class="project-title">
+                Work Tracker 開發儀表板
+                <span class="arrow">&#8599;</span>
+              </div>
+              <div class="project-impact">
+                自動追蹤每個開發任務的時間和 token 消耗，產出週報分析
+              </div>
+              <p class="project-desc">
+                AI 輔助開發的工時追蹤系統。自動記錄每筆工作的分類、耗時、token 用量，
+                搭配 Web Dashboard 視覺化，支援週報檢討和效率分析。
+              </p>
+              <div class="tags">
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">Chart.js</span>
+                <span class="tag">cron</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="services">
+          <div class="section-label">Services</div>
+
+          <div class="service-item">
+            <div class="service-title">自動化工具開發</div>
+            <p class="service-detail">
+              報表自動產生、資料定時抓取、通知推播。
+              你每天花 2 小時重複做的事，我幫你變成一鍵或全自動。
+            </p>
+            <div class="service-price">NT$15,000 - 50,000 / 依複雜度</div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-title">數據儀表板</div>
+            <p class="service-detail">
+              把 Excel、Google Sheets 或資料庫裡的數據，變成互動式 Web Dashboard。
+              即時更新、多維度篩選、手機也能看。
+            </p>
+            <div class="service-price">NT$30,000 - 100,000 / 依規模</div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-title">LINE / Telegram Bot</div>
+            <p class="service-detail">
+              客服自動回覆、訂單通知、排班查詢、AI 問答。
+              串接你現有的系統，不需要換工具。
+            </p>
+            <div class="service-price">NT$15,000 - 40,000 / 依功能</div>
+          </div>
+
+          <div class="service-item">
+            <div class="service-title">AI 導入顧問</div>
+            <p class="service-detail">
+              幫你評估哪些工作適合用 AI 自動化、選擇工具、建置本地 LLM。
+              保護資料隱私、降低長期 API 成本。
+            </p>
+            <div class="service-price">NT$3,000 / 小時 諮詢</div>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+          <div class="section-label">Contact</div>
+          <div class="cta-block">
+            <h3>有想自動化的工作？聊聊看。</h3>
+            <p style="font-size:0.9rem;">
+              不管是一個模糊的想法還是明確的需求，都可以先談。
+              初次諮詢免費，我會告訴你可不可行、大概要多久。
+            </p>
+            <!-- 替換成你的 email -->
+            <a href="mailto:rexsu.net@gmail.com" class="cta-link">
+              rexsu.net@gmail.com &#8599;
+            </a>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="padding-top:48px; font-size:0.75rem; color:#475569;">
+          <p>
+            參考
+            <a href="https://brittanychiang.com" target="_blank" style="color:#475569;">Brittany Chiang</a>
+            的設計風格，用純 HTML/CSS 手刻。
+          </p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scroll spy for nav -->
+  <script>
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.toggle('active',
+              link.getAttribute('href') === '#' + entry.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -60% 0px' });
+    sections.forEach(s => observer.observe(s));
+  </script>
+</body>
+</html>
