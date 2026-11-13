@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>老闆如何更新車款｜Harbor Rent 示意站</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"></head>
+<body style="padding:0"><div class="wrap doc">
+<p><a href="index.html">← 回首頁</a></p>
+<h1>老闆如何自己改車款與照片</h1>
+<p>網站上所有車款都來自同一個檔案 <code>cars.json</code>。改這個檔案、存檔、上傳，網站就更新，不需要動任何程式。</p>
+
+<h2>一、改 cars.json（最簡單）</h2>
+<ol><li>用記事本或 VS Code 打開 <code>cars.json</code>。</li><li>每台車是一組 <code>{ ... }</code>，直接改裡面的文字或數字。</li><li>存檔後上傳到主機覆蓋舊檔，重新整理網頁即可。</li></ol>
+<pre><code>{
+  "id": "eco-01",
+  "category": "國產代步車",
+  "name": "Breeze 1.5 小型房車",
+  "price_per_day": 1200,
+  "specs": ["5 人座", "1.5L", "自動"],
+  "best_for": "市區代步、出差",
+  "image": "photos/breeze.jpg",
+  "available": true
+}</code></pre>
+<table><tr><th>欄位</th><th>說明</th></tr>
+<tr><td>category</td><td>分類，同名稱的車會自動歸在同一個篩選按鈕</td></tr>
+<tr><td>price_per_day</td><td>日租價，只填數字</td></tr>
+<tr><td>image</td><td>照片路徑或網址；留空會顯示示意插圖</td></tr>
+<tr><td>available</td><td>false 會顯示「目前已出租」並停用詢價</td></tr></table>
+<div class="callout"><b>注意：</b>每組 <code>{ }</code> 之間要有逗號，最後一組後面不要逗號；文字都要用英文雙引號。改壞時頁面會顯示友善提示而不是空白，可用 jsonlint.com 檢查格式。</div>
+
+<h2>二、換車款照片</h2>
+<ol><li>把照片放進網站資料夾的 <code>photos/</code>（建議 1600×1000、小於 300KB、JPG 或 WebP）。</li><li>在該車款的 <code>image</code> 填 <code>"photos/檔名.jpg"</code>。</li></ol>
+
+<h2>三、之後接 Google Sheet（免改 JSON）</h2>
+<ol><li>建立試算表，第一列放欄位名稱（id、category、name、price_per_day、specs、best_for、image、available）。</li><li>「檔案 → 共用 → 發布到網路」，選分頁並選 CSV 格式，取得網址。</li><li>由開發者把 <code>app.js</code> 的 <code>dataUrl</code> 改成該網址，並加入約 20 行 CSV 轉換程式；specs 欄用「、」分隔。</li><li>之後老闆只要改試算表，網站幾分鐘內自動更新。</li></ol>
+<p>此為升級選項，作品集示意站目前使用 cars.json。</p>
+
+<h2>四、本機預覽備註</h2>
+<p>雙擊開啟 index.html 時，瀏覽器會擋讀檔，因此改讀 <code>cars.fallback.js</code>（cars.json 的複本）。要測試真正的 cars.json，請在資料夾內執行 <code>python3 -m http.server</code> 後開 localhost:8000。</p>
+</div></body></html>
