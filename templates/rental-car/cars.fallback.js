@@ -5,7 +5,7 @@ window.CARS_FALLBACK = {
     {
       "id": "lux-01",
       "category": "豪華轎車",
-      "name": "Stellar S 500 級",
+      "name": "Stellar 旗艦轎車",
       "price_per_day": 4800,
       "specs": [
         "5 人座",
@@ -23,7 +23,7 @@ window.CARS_FALLBACK = {
     {
       "id": "lux-02",
       "category": "豪華轎車",
-      "name": "Bavaria 530 級",
+      "name": "Meridian 行政轎車",
       "price_per_day": 4200,
       "specs": [
         "5 人座",
@@ -41,7 +41,7 @@ window.CARS_FALLBACK = {
     {
       "id": "lux-03",
       "category": "豪華轎車",
-      "name": "Aurora E 級",
+      "name": "Aurora 豪華轎車",
       "price_per_day": 3800,
       "specs": [
         "5 人座",
